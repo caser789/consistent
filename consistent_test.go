@@ -34,3 +34,18 @@ func TestAdd(t *testing.T) {
 		t.Errorf("expected sorted hashes to be sorted")
 	}
 }
+
+func TestRemove(t *testing.T) {
+	x := New()
+	x.Add("abcdefg")
+	x.Remove("abcdefg")
+	checkNum(len(x.circle), 0, t)
+	checkNum(len(x.sortedHashes), 0, t)
+}
+
+func TestRemoveNonExisting(t *testing.T) {
+	x := New()
+	x.Add("abcdefg")
+	x.Remove("abcdefghijk")
+	checkNum(len(x.circle), 20, t)
+}

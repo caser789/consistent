@@ -34,6 +34,15 @@ func (c *Consistent) Add(elt string) {
 	c.count++
 }
 
+// Remove removes an element from the hash.
+func (c *Consistent) Remove(elt string) {
+	for i := 0; i < c.NumberOfReplicas; i++ {
+		delete(c.circle, c.hashKey(c.eltKey(elt, i)))
+	}
+	c.updateSortedHashes()
+	c.count--
+}
+
 func (c *Consistent) hashKey(key string) uint32 {
 	return crc32.ChecksumIEEE([]byte(key))
 }
